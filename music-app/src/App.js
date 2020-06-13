@@ -19,20 +19,6 @@ export default function App() {
     <DrizzleContext.Provider drizzle={drizzle}>
       <Router>
         <div>
-          <ul>
-            <li>
-              <Link to="/">Home</Link>
-            </li>
-            <li>
-              <Link to="/login">Login</Link>
-            </li>
-            <li>
-              <Link to="/signup">Signup</Link>
-            </li>
-          </ul>
-
-          <hr />
-
           <Switch>
             <Route exact path="/">
               <Home />

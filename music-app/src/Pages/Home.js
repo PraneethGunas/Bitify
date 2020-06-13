@@ -1,33 +1,38 @@
-import React from "react";
+import React, { useState } from "react";
 import MusicPlayer from "react-responsive-music-player";
+import Song from "../components/Song";
+import { playlist } from "../data";
 
 const Home = () => {
-  const playlist = [
-    {
-      url: "file://home/pratyaksh_chandra/Downloads/liggi.mp3",
-      cover: "hello",
-      title: "Random",
-      artist: ["Artist1"],
-    },
-    {
-      url:
-        "http://res.cloudinary.com/alick/video/upload/v1502689683/Luis_Fonsi_-_Despacito_ft._Daddy_Yankee_uyvqw9.mp3",
-      cover: "hello",
-      title: "Despacito",
-      artist: ["Louis Fonsi"],
-    },
-    {
-      url:
-        "http://res.cloudinary.com/alick/video/upload/v1502689683/Luis_Fonsi_-_Despacito_ft._Daddy_Yankee_uyvqw9.mp3",
-      cover: "hello",
-      title: "Despacito",
-      artist: ["Louis Fonsi"],
-    },
-  ];
+  const [playing, setPlaying] = useState([playlist[0]]);
+
   return (
     <div className="songlist">
-      <div></div>
-      <MusicPlayer playlist={playlist} />
+      <div className="head">
+        <div className="logo">BITTIFY</div>
+      </div>
+      <div className="list">
+        {playlist.map((song, index) => (
+          <Song
+            key={index}
+            title={song.title}
+            artist={song.artist}
+            tile={song.cover}
+            key={index}
+            playing={playing}
+            setPlaying={setPlaying}
+            index={index}
+          />
+        ))}
+      </div>
+      <div className="playerDiv">
+        <MusicPlayer
+          playlist={playing}
+          width={"100%"}
+          autoplay={true}
+          progressColor={"#f98e1d"}
+        />
+      </div>
     </div>
   );
 };
