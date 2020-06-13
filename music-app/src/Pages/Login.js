@@ -47,7 +47,7 @@ export default function Login() {
       const docRef = await db.collection("users").doc(walletID);
       const user = await docRef.get();
       if (user.exists) {
-        alert("User Exists");
+        console.log(user.id);
         history.push("/home");
       } else {
         alert("No user");
@@ -119,15 +119,8 @@ export default function Login() {
             Sign In
           </Button>
           <Grid container>
-            <Grid item xs>
-              <Link href="#" variant="body2">
-                Forgot password?
-              </Link>
-            </Grid>
             <Grid item>
-              <Link href="#" variant="body2">
-                {"Don't have an account? Sign Up"}
-              </Link>
+              <Link to="/signup">{"Don't have an account? Sign Up"}</Link>
             </Grid>
           </Grid>
         </form>
