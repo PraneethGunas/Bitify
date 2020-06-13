@@ -2,18 +2,46 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { firestore } from "../firebase";
 import { useHistory } from "react-router-dom";
+import Avatar from "@material-ui/core/Avatar";
+import Button from "@material-ui/core/Button";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import TextField from "@material-ui/core/TextField";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Checkbox from "@material-ui/core/Checkbox";
+import Grid from "@material-ui/core/Grid";
+import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
+import Typography from "@material-ui/core/Typography";
+import { makeStyles } from "@material-ui/core/styles";
+import Container from "@material-ui/core/Container";
 
 const db = firestore;
-const Login = () => {
+
+const useStyles = makeStyles((theme) => ({
+  paper: {
+    marginTop: theme.spacing(8),
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+  },
+  avatar: {
+    margin: theme.spacing(1),
+    backgroundColor: theme.palette.secondary.main,
+  },
+  form: {
+    width: "100%", // Fix IE 11 issue.
+    marginTop: theme.spacing(1),
+  },
+  submit: {
+    margin: theme.spacing(3, 0, 2),
+  },
+}));
+
+export default function Login() {
+  const classes = useStyles();
   const [walletID, setWalletID] = useState("");
   const [username, setUsername] = useState("");
-  const [error, setError] = useState(null);
   const history = useHistory();
-  const signInWithwalletIDAndusernameHandler = async (
-    event,
-    walletID,
-    username
-  ) => {
+  const submitAction = async (event, walletID, username) => {
     try {
       event.preventDefault();
       const docRef = await db.collection("users").doc(walletID);
@@ -40,43 +68,70 @@ const Login = () => {
   };
 
   return (
-    <div>
-      <h1>Sign In</h1>
-      <div>
-        {error !== null && <div>{error}</div>}
-        <form>
-          <label htmlFor="walletid" className="block">
-            Wallet ID
-          </label>
-          <input
-            type="text"
-            name="walletid"
+    <Container component="main" maxWidth="xs">
+      <CssBaseline />
+      <div className={classes.paper}>
+        <Avatar className={classes.avatar}>
+          <LockOutlinedIcon />
+        </Avatar>
+        <Typography component="h1" variant="h5">
+          Sign in
+        </Typography>
+        <form
+          className={classes.form}
+          noValidate
+          onSubmit={(event) => submitAction(event, walletID, username)}
+        >
+          <TextField
             value={walletID}
-            placeholder="Wallet ID"
-            id="walletid"
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            id="walletID"
+            label="WalletID"
+            name="walletid"
+            autoFocus
             onChange={(event) => onChangeHandler(event)}
           />
-          <label htmlFor="username" className="block">
-            Name
-          </label>
-          <input
-            type="text"
-            name="username"
+          <TextField
             value={username}
-            placeholder="Your usename"
+            variant="outlined"
+            margin="normal"
+            fullWidth
+            name="username"
+            label="Username"
+            type="username"
             id="username"
             onChange={(event) => onChangeHandler(event)}
           />
-          <button
-            onClick={(event) => {
-              signInWithwalletIDAndusernameHandler(event, walletID, username);
-            }}
+          <FormControlLabel
+            control={<Checkbox value="remember" color="primary" />}
+            label="Remember me"
+          />
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            color="primary"
+            className={classes.submit}
           >
-            Sign in
-          </button>
+            Sign In
+          </Button>
+          <Grid container>
+            <Grid item xs>
+              <Link href="#" variant="body2">
+                Forgot password?
+              </Link>
+            </Grid>
+            <Grid item>
+              <Link href="#" variant="body2">
+                {"Don't have an account? Sign Up"}
+              </Link>
+            </Grid>
+          </Grid>
         </form>
       </div>
-    </div>
+    </Container>
   );
-};
-export default Login;
+}
