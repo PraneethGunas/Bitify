@@ -1,0 +1,15 @@
+.progress {
+  width: 100%;
+  border-radius: 50px;
+  background: #616161;
+  box-shadow:  20px 20px 60px #525252, 
+             -20px -20px 60px #707070;
+  outline: none;
+  cursor: pointer;
+  height: 15px;
+
+  .progress-inner {
+    height: 100%;
+    border-radius: 50px;
+  }
+}

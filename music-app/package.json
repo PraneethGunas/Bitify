@@ -15,6 +15,8 @@
     "firebase": "^7.15.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-h5-audio-player": "^3.1.0",
+    "react-responsive-music-player": "^0.4.3",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.1",
     "web3": "^1.2.9"

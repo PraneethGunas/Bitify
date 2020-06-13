@@ -5,9 +5,9 @@ import Collector from "./artifacts/Collector.json";
 import Migrations from "./artifacts/Migrations.json";
 import { DrizzleContext } from "@drizzle/react-plugin";
 import { Drizzle } from "@drizzle/store";
-
-// import drizzleOptions from "./drizzleOptions";
 import { AppProvider } from "./Pages/AppContext";
+import "../src/App.css";
+
 const drizzleOptions = {
   contracts: [HelloWorld, Collector, Migrations],
   web3: {

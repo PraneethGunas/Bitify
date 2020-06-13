@@ -2,37 +2,98 @@
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.songlist {
+  display: grid;
+  grid-template-rows: 1fr 9fr 1fr;
+  width: 100%;
+  margin: auto;
+  height: 100vh;
+}
+.head {
+  display: flex;
+  text-align: center;
+  background-color: #dfdede;
+  font-size: 3em;
+  color: black;
+  justify-content: center;
+  height: auto;
+  font-weight: bold;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.list {
+  background-color: #dfdede;
+  overflow: scroll;
+}
+.list::-webkit-scrollbar {
+  display: none;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.player {
+  border-radius: 30px;
+  padding: 1em;
+  padding-left: 2em;
+  background: #dfdede;
+  box-shadow: 5px 5px 10px #7f7f7f, -5px -5px 10px #ffffff;
+}
+.playerDiv {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1em;
+  background: #dfdede;
+}
+
+.song- {
+  margin: 1.5em;
+  padding: 1em;
+  display: grid;
+  grid-template-columns: 1fr 15fr;
+  border-radius: 1em;
+  background: #dfdede;
+  box-shadow: 7px 7px 14px #bebdbd, -7px -7px 14px #ffffff;
+}
+
+.song-active {
+  margin: 1.5em;
+  padding: 1em;
+  display: grid;
+  grid-template-columns: 1fr 15fr;
+  border-radius: 1em;
+  box-shadow: inset 6px 6px 10px 0 #d67a19, inset -6px -6px 10px 0#ffa221;
+  background: #f98e1d;
+}
+
+.details {
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+}
+.tile {
+  height: 4em;
+  width: 4em;
+  margin-right: 1em;
+  border-radius: 0.8em;
+}
+.title {
+  font-size: 1.5em;
+  color: black;
+}
+.artist {
+  font-size: 1.2em;
+  margin-top: 0.2em;
+  color: gray;
+}
+a {
+  text-decoration: none;
+}
+.song-:hover {
+  box-shadow: inset 6px 6px 10px 0 rgba(0, 0, 0, 0.2),
+    inset -6px -6px 10px 0 rgba(255, 255, 255, 0.5);
 }
 
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.logo {
+  margin-top: 0.5em;
+  font-size: 1.4em;
+  color: #000000;
+  text-shadow: 7px 7px 14px #bebdbd, -7px -7px 14px #ffffff;
 }
