@@ -1,0 +1,147 @@
+@import '~normalize.css/normalize.css';
+@import '~font-awesome/css/font-awesome.css';
+
+$font-weight: 400 !default;
+$font-size-lg: 1.4em !default;
+$font-size-md: 0.9em !default;
+$font-size-sm: 0.9em !default;
+$player-time-width: 2em !default;
+$player-title-color: #000 !default;
+$player-artist-color: #4a4a4a !default;
+$player-time-color: #000 !default;
+$player-volume-width: 40px!default;
+$player-control-font-size: 20px !default;
+$player-cover-size: 7em !default;
+
+* {
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, PingFang SC, Source Han Sans CN,
+    Hiragino Sans GB, Microsoft YaHei, WenQuanYi Micro Hei, sans-serif;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.player {
+  display: flex;
+
+  .player-control {
+    flex: 1;
+
+    .music-info {
+      .title,
+      .artist {
+        font-weight: $font-weight;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+      }
+
+      .title {
+        margin-top:0.5em;
+        margin-bottom: 0;
+        color: $player-title-color;
+        font-size: $font-size-lg;
+      }
+
+      .artist {
+        margin-bottom: 0.2em;
+        color: $player-artist-color;
+        font-size: $font-size-md;
+      }
+    }
+
+    .time-and-volume {
+      display: flex;
+      color: $player-time-color;
+      font-size: $font-size-sm;
+      line-height: 2;
+
+      .time-remaining {
+        width: $player-time-width;
+        margin-right: 10px;
+        text-align: left;
+        font-weight: $font-weight;
+      }
+
+      .volume-control {
+        display: flex;
+        align-items: center;
+        margin-left: 2em;
+
+        .volume-icon {
+          margin-right: 2px;
+          color: $player-time-color;
+          cursor: pointer;
+        }
+
+        .volume-bar {
+          width: $player-volume-width;
+          opacity: 0;
+          transition: opacity 0.5s linear;
+        }
+
+        &:hover {
+          .volume-bar {
+            opacity: 0.5;
+          }
+        }
+      }
+    }
+
+    .controls {
+      margin: 1em 0em 0.5em 0em;
+      display: flex;
+      width: 100%;
+      justify-content: center;
+
+      button {
+        width: 50px;
+        margin: 0;
+        padding: 0;
+        font-size: $player-control-font-size;
+        background-color: transparent;
+        border: none;
+        box-shadow: none;
+        outline: none;
+        user-select: none;
+        touch-action: manipulation;
+        cursor: pointer;
+      }
+    }
+  }
+
+  .player-cover {
+    width: 7em;
+    height: 7em;
+    margin:1em;
+    flex: none;
+    border-radius: 20px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+
+  &.vertical {
+    flex-direction: column-reverse;
+
+    .player-control {
+      .music-info {
+        text-align: center;
+      }
+
+      .controls {
+        justify-content: space-evenly;
+
+        button {
+          &:first-child {
+            margin: 0;
+          }
+        }
+      }
+    }
+
+    .player-cover {
+      margin: 0 auto;
+    }
+  }
+}

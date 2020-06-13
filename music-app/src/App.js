@@ -5,6 +5,7 @@ import Migrations from "./artifacts/Migrations.json";
 import { Drizzle } from "@drizzle/store";
 import { DrizzleContext } from "@drizzle/react-plugin";
 import { AppProvider } from "./Pages/AppContext";
+import "../src/App.css";
 
 const drizzleOptions = {
   contracts: [HelloWorld, Migrations],
