@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { firestore } from "../firebase";
+import { useHistory } from "react-router-dom";
 
 const db = firestore;
 const Login = () => {
   const [walletID, setWalletID] = useState("");
   const [username, setUsername] = useState("");
   const [error, setError] = useState(null);
+  const history = useHistory();
   const signInWithwalletIDAndusernameHandler = async (
     event,
     walletID,
@@ -17,9 +19,10 @@ const Login = () => {
       const docRef = await db.collection("users").doc(walletID);
       const user = await docRef.get();
       if (user.exists) {
-        console.log("User Exists");
+        alert("User Exists");
+        history.push("/home");
       } else {
-        console.log("No user");
+        alert("No user");
       }
     } catch (error) {
       console.log(error);
