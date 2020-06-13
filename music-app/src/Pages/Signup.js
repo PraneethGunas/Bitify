@@ -14,9 +14,9 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
-import Web3 from "web3";
-import TruffleContract from "@truffle/contract";
+import { newContextComponents } from "@drizzle/react-components";
 import { firestore } from "../firebase";
+import { AppContext } from "./AppContext";
 const db = firestore;
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -43,14 +43,9 @@ export default function SignUp() {
   const [userType, setUser] = React.useState("Listner");
   const [fname, setFname] = React.useState("");
   const [lname, setLname] = React.useState("");
+  const { drizzle, drizzleState } = React.useContext(AppContext);
+  const { AccountData, ContractData, ContractForm } = newContextComponents;
 
-  const initBlockData = async () => {
-    const web3 = new Web3("http://localhost:7545");
-  };
-
-  React.useEffect(() => {
-    initBlockData();
-  });
   const changeUser = (event) => {
     setUser(event.target.value);
   };
@@ -144,6 +139,13 @@ export default function SignUp() {
             </Grid>
           </Grid>
         </form>
+        {/* <ContractData drizzle={drizzle} contract="HelloWorld" method="get" />
+        <ContractForm
+          drizzle={drizzle}
+          contract="HelloWorld"
+          method="get"
+          // sendArgs={[ value: '100' ]}
+        /> */}
       </div>
     </Container>
   );

@@ -1,21 +1,40 @@
 import React from "react";
 import Routes from "./Pages/Route";
 import HelloWorld from "./artifacts/HelloWorld.json";
+import Collector from "./artifacts/Collector.json";
 import Migrations from "./artifacts/Migrations.json";
-import { Drizzle } from "@drizzle/store";
 import { DrizzleContext } from "@drizzle/react-plugin";
-import { AppProvider } from "./Pages/AppContext";
+import { Drizzle } from "@drizzle/store";
 
+// import drizzleOptions from "./drizzleOptions";
+import { AppProvider } from "./Pages/AppContext";
 const drizzleOptions = {
-  contracts: [HelloWorld, Migrations],
+  contracts: [HelloWorld, Collector, Migrations],
+  web3: {
+    fallback: {
+      type: "ws",
+      url: "ws://127.0.0.1:7545",
+    },
+  },
 };
 const drizzle = new Drizzle(drizzleOptions);
+
 export default function App() {
   return (
-    <AppProvider>
-      <DrizzleContext.Provider drizzle={drizzle}>
-        <Routes />
-      </DrizzleContext.Provider>
-    </AppProvider>
+    <DrizzleContext.Provider drizzle={drizzle}>
+      <DrizzleContext.Consumer>
+        {(drizzleContext) => {
+          const { drizzle, drizzleState, initialized } = drizzleContext;
+          if (!initialized) {
+            return "Loading...";
+          }
+          return (
+            <AppProvider drizzle={drizzle} drizzleState={drizzleState}>
+              <Routes />
+            </AppProvider>
+          );
+        }}
+      </DrizzleContext.Consumer>
+    </DrizzleContext.Provider>
   );
 }

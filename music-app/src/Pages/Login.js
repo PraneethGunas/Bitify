@@ -13,6 +13,7 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
+import { AppContext } from "./AppContext";
 
 const db = firestore;
 
@@ -41,13 +42,15 @@ export default function Login() {
   const [walletID, setWalletID] = useState("");
   const [username, setUsername] = useState("");
   const history = useHistory();
+  const { setUser } = React.useContext(AppContext);
+
   const submitAction = async (event, walletID, username) => {
     try {
       event.preventDefault();
       const docRef = await db.collection("users").doc(walletID);
       const user = await docRef.get();
       if (user.exists) {
-        console.log(user.id);
+        setUser({ id: user.id });
         history.push("/home");
       } else {
         alert("No user");
