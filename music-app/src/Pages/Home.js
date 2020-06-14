@@ -10,14 +10,15 @@ import { Link } from "react-router-dom";
 const Home = () => {
   // const { AccountData, ContractData, ContractForm } = newContextComponents;
   const { drizzleState, user } = React.useContext(AppContext);
+  const freshUser = user.name ? user : JSON.parse(localStorage.getItem("user"));
   const [playing, setPlaying] = React.useState([playlist[0]]);
-  const account = user.walletid;
+  const account = freshUser.walletid;
   const balance = drizzleState.accountBalances[account];
   return (
     <div className="songlist">
       <div className="head">
         <div className="logo">BITTIFY</div>
-        <div className="topBar">Hello {user.name}</div>
+        <div className="topBar">Hello {freshUser.name}</div>
         <Balance balance={balance} />
       </div>
       <div className="mid">

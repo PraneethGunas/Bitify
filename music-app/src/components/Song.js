@@ -6,6 +6,7 @@ const Song = ({ title, artist, tile, setPlaying, index, playing }) => {
     const temp = [];
     temp.push(playlist[index]);
     setPlaying(temp);
+    console.log(temp[0]);
   };
 
   return (
