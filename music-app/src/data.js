@@ -27,7 +27,7 @@ export const playlist = [
       "https://mp3.filmysongs.in/download.php?id=Sola(English%20Version)%20Luis%20Fonsi%20Mp3%20Official%20Music%20filmysongs.co.mp3",
     cover: "https://i.axs.com/2019/02/64325-optimized_5c5c96b3289c4.jpg",
     title: "Sola",
-    artist: ["Luis Fonsi"],
+    artist: ["Louis Fonsi"],
   },
   {
     url:
