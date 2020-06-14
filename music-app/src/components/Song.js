@@ -1,12 +1,23 @@
 import React from "react";
 import { playlist } from "../data";
+import firebase from "firebase/app";
+import { firestore } from "../firebase";
+const db = firestore;
+const Song = ({ title, artist, tile, setPlaying, index, playing, user }) => {
+  const increment = firebase.firestore.FieldValue.increment(1);
+  const updateCount = async (artistName) => {
+    const docRef = await db.collection("users").doc(user.walletid);
+    // const listened = docRef.get()
+    // const userArtists =
+    // docRef.update({ artist: { [artistName]: increment } });
+  };
 
-const Song = ({ title, artist, tile, setPlaying, index, playing }) => {
   const updatePlaying = () => {
     const temp = [];
     temp.push(playlist[index]);
     setPlaying(temp);
-    console.log(temp[0]);
+    updateCount(temp[0].artist[0]);
+    console.log(temp[0].artist[0]);
   };
 
   return (

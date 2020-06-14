@@ -3,7 +3,7 @@ import "firebase/auth";
 import "firebase/firestore";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAYgX1XgVnnbZU2SXDWOZJ1NiwHPFZMpVM",
+  apiKey: process.env.REACT_APP_API_KEY,
   authDomain: "bitify-7d21a.firebaseapp.com",
   databaseURL: "https://bitify-7d21a.firebaseio.com",
   projectId: "bitify-7d21a",

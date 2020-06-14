@@ -41,6 +41,7 @@ const Home = () => {
               playing={playing}
               setPlaying={setPlaying}
               index={index}
+              user={freshUser}
             />
           ))}
         </div>
