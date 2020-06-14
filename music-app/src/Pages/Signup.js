@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
@@ -17,6 +17,9 @@ import Container from "@material-ui/core/Container";
 import { newContextComponents } from "@drizzle/react-components";
 import { firestore } from "../firebase";
 import { AppContext } from "./AppContext";
+import Web3 from "web3";
+import Collector from "../artifacts/Collector.json";
+import TruffleContract from "@truffle/contract";
 const db = firestore;
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -43,9 +46,13 @@ export default function SignUp() {
   const [userType, setUser] = React.useState("Listner");
   const [fname, setFname] = React.useState("");
   const [lname, setLname] = React.useState("");
+  const [walletID, setWallet] = React.useState("");
+
   const { drizzle, drizzleState } = React.useContext(AppContext);
   const { AccountData, ContractData, ContractForm } = newContextComponents;
-
+  const web3 = new Web3.providers.HttpProvider("http://localhost:7545");
+  const collector = TruffleContract(Collector);
+  collector.setProvider(web3);
   const changeUser = (event) => {
     setUser(event.target.value);
   };
@@ -57,8 +64,38 @@ export default function SignUp() {
       setFname(value);
     } else if (name === "lastName") {
       setLname(value);
+    } else {
+      setWallet(value);
     }
   };
+
+  const register = () => {
+    if (walletID) {
+      console.log(walletID);
+      const transaction = {};
+      web3.eth.sendTransaction(transaction, console.log);
+      // collector.deployed().then((instance) => {
+      //   instance.methods
+      //     .register()
+      //     .call({ from: walletID })
+      //     .on("transactionHash", function (hash) {
+      //       console.log(hash);
+      //     })
+      //     .on("receipt", function (receipt) {
+      //       console.log(receipt);
+      //     })
+      //     .on("confirmation", function (confirmationNumber, receipt) {
+      //       console.log(confirmationNumber, receipt);
+      //     })
+      //     .on("error", console.error);
+      // });
+    }
+  };
+  useEffect(() => {
+    collector.deployed().then((instance) => {
+      console.log(instance);
+    });
+  });
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -74,8 +111,7 @@ export default function SignUp() {
           noValidate
           onSubmit={(event) => {
             event.preventDefault();
-            const name = fname + " " + lname;
-            alert("transaction with: " + name + "\nUser Type:" + userType);
+            register();
           }}
         >
           <Grid container spacing={2}>
@@ -98,6 +134,16 @@ export default function SignUp() {
                 fullWidth
                 label="Last Name"
                 name="lastName"
+                onChange={(event) => onChangeHandler(event)}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                value={walletID}
+                variant="outlined"
+                fullWidth
+                label="Wallet ID"
+                name="walletid"
                 onChange={(event) => onChangeHandler(event)}
               />
             </Grid>
@@ -139,12 +185,12 @@ export default function SignUp() {
             </Grid>
           </Grid>
         </form>
-        {/* <ContractData drizzle={drizzle} contract="HelloWorld" method="get" />
-        <ContractForm
+        {/* <ContractForm
           drizzle={drizzle}
-          contract="HelloWorld"
-          method="get"
-          // sendArgs={[ value: '100' ]}
+          drizzleState={drizzleState}
+          contract="Collector"
+          method="register"
+          labels={["100 ethers will be transfered!"]}
         /> */}
       </div>
     </Container>
