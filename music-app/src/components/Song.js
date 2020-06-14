@@ -1,15 +1,28 @@
 import React from "react";
 import { playlist } from "../data";
-import firebase from "firebase/app";
+import firebase from "firebase";
 import { firestore } from "../firebase";
 const db = firestore;
 const Song = ({ title, artist, tile, setPlaying, index, playing, user }) => {
   const increment = firebase.firestore.FieldValue.increment(1);
   const updateCount = async (artistName) => {
-    const docRef = await db.collection("users").doc(user.walletid);
-    // const listened = docRef.get()
-    // const userArtists =
-    // docRef.update({ artist: { [artistName]: increment } });
+    try {
+      const usersRef = await db.collection("users").doc(user.walletid);
+      await db.collection("artists").doc(artistName).update({
+        count: increment,
+      });
+      const listened = await usersRef.get();
+      const artists = listened.data().artist;
+      if (artists && artists[artistName]) {
+        usersRef.update({
+          artist: { ...artists, [artistName]: artists[artistName] + 1 },
+        });
+      } else {
+        usersRef.update({ artist: { ...artists, [artistName]: 1 } });
+      }
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   const updatePlaying = () => {
@@ -17,7 +30,6 @@ const Song = ({ title, artist, tile, setPlaying, index, playing, user }) => {
     temp.push(playlist[index]);
     setPlaying(temp);
     updateCount(temp[0].artist[0]);
-    console.log(temp[0].artist[0]);
   };
 
   return (
