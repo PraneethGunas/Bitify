@@ -4,7 +4,7 @@
 
 .songlist {
   display: grid;
-  grid-template-rows: 1fr 9fr 1fr;
+  grid-template-rows: 1fr 13fr 1fr;
   width: 100%;
   margin: auto;
   height: 100vh;
@@ -92,8 +92,78 @@ a {
 }
 
 .logo {
-  margin-top: 0.5em;
-  font-size: 1.4em;
-  color: #000000;
-  text-shadow: 7px 7px 14px #bebdbd, -7px -7px 14px #ffffff;
+  margin: 0.3em;
+  padding: 0.2em;
+  font-size: 0.9em;
+  color: #ffffff;
+  /* text-shadow: 7px 7px 14px #bebdbd, -7px -7px 14px #ffffff; */
+  border-radius: 10px;
+  background: #f98e1d;
+  box-shadow: 10px 10px 20px #bebdbd, -10px -10px 20px #fff;
+}
+
+.mid {
+  display: grid;
+  grid-template-columns: 1fr 7fr;
+  overflow: scroll;
+}
+.mid::-webkit-scrollbar {
+  display: none;
+}
+
+.Nav {
+  background: #dfdede;
+  height: 100%;
+  border-right: lightgray 0.08em solid;
+}
+
+.head {
+  display: grid;
+  grid-template-columns: 1fr 12fr 2fr;
+  justify-content: center;
+  align-items: center;
+}
+
+.balance {
+  display: grid;
+  grid-template-columns: 1fr 5fr;
+  margin: 0.5em 0.5em 0.2em 0em;
+  padding: 0.2em;
+  width: 5em;
+  height: 2.4em;
+  border-radius: 10px;
+  font-size: 0.5em;
+  color: #000;
+  background: #dfdede;
+  box-shadow: 7px 7px 14px #bebdbd, -7px -7px 14px #ffffff;
+}
+.balance img {
+  margin-right: 0em;
+  size: 120%;
+  max-width: 2em;
+  max-height: 2em;
+}
+p {
+  margin-top: 0.6em;
+}
+
+.navli {
+  font-weight: 400;
+  text-align: center;
+  margin: 1em;
+  padding: 0.8em;
+  border-radius: 1em;
+  background: #dfdede;
+  box-shadow: 7px 7px 14px #bebdbd, -7px -7px 14px #ffffff;
+}
+.navli:hover {
+  box-shadow: inset 6px 6px 10px 0 rgba(0, 0, 0, 0.2),
+    inset -6px -6px 10px 0 rgba(255, 255, 255, 0.5);
+}
+
+.topBar {
+  margin-left: 0.5em;
+  text-align: left;
+  font-size: 1em;
+  color: gray;
 }
