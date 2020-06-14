@@ -4,17 +4,7 @@ import Home from "../Pages/Home";
 import Login from "../Pages/Login";
 import Signup from "../Pages/Signup";
 import Transactions from "./Transactions";
-import { useHistory } from "react-router-dom";
 export default function Routes() {
-  const history = useHistory();
-  // React.useEffect(() => {
-  //   let user = localStorage.getItem("user");
-  //   user = JSON.parse(user);
-  //   if (user && user.name) {
-  //     alert("asdas");
-  //     history.push("/home");
-  //   }
-  // }, []);
   return (
     <Router>
       <Switch>

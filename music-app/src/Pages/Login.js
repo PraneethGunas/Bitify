@@ -43,6 +43,14 @@ export default function Login() {
   const [username, setUsername] = useState("");
   const history = useHistory();
   const { setUser, drizzleState } = React.useContext(AppContext);
+  React.useEffect(() => {
+    let user = localStorage.getItem("user");
+    user = JSON.parse(user);
+    if (user && user.name) {
+      setUser(user);
+      history.push("/home");
+    }
+  }, []);
   // initialiseDB(drizzleState); // run this only whne you're firestore db is empty
   const submitAction = async (event, walletID, username) => {
     try {

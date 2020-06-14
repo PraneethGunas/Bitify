@@ -10,8 +10,8 @@ import { Link } from "react-router-dom";
 const Home = () => {
   // const { AccountData, ContractData, ContractForm } = newContextComponents;
   const { drizzleState, user } = React.useContext(AppContext);
-  const account = user.walletid;
   const [playing, setPlaying] = React.useState([playlist[0]]);
+  const account = user.walletid;
   const balance = drizzleState.accountBalances[account];
   return (
     <div className="songlist">
