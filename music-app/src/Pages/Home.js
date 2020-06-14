@@ -1,27 +1,31 @@
 import React from "react";
-import { newContextComponents } from "@drizzle/react-components";
+// import { newContextComponents } from "@drizzle/react-components";
 import { AppContext } from "./AppContext";
 import MusicPlayer from "react-responsive-music-player";
 import Song from "../components/Song";
 import { playlist } from "../data";
 import Balance from "../components/Balance";
+import { Link } from "react-router-dom";
 
 const Home = () => {
   // const { AccountData, ContractData, ContractForm } = newContextComponents;
-  const { drizzle, drizzleState, user } = React.useContext(AppContext);
-  const account = user.id;
+  const { drizzleState, user } = React.useContext(AppContext);
+  const account = user.walletid;
   const [playing, setPlaying] = React.useState([playlist[0]]);
   const balance = drizzleState.accountBalances[account];
   return (
     <div className="songlist">
       <div className="head">
         <div className="logo">BITTIFY</div>
-        <div className="topBar">Hello Pratyaksh !</div>
-        <Balance />
+        <div className="topBar">Hello {user.name}</div>
+        <Balance balance={balance} />
       </div>
       <div className="mid">
         <div className="Nav">
-          <div className="navli">Transactions</div>
+          <Link to="/transactions">
+            <div className="navli">Transactions</div>
+          </Link>
+
           <div className="navli">Calculator</div>
           <div className="navli">Profile</div>
         </div>

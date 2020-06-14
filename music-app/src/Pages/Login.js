@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { firestore } from "../firebase";
+import { firestore, initialiseDB } from "../firebase";
 import { useHistory } from "react-router-dom";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
@@ -42,15 +42,17 @@ export default function Login() {
   const [walletID, setWalletID] = useState("");
   const [username, setUsername] = useState("");
   const history = useHistory();
-  const { setUser } = React.useContext(AppContext);
-
+  const { setUser, drizzleState } = React.useContext(AppContext);
+  // initialiseDB(drizzleState); // run this only whne you're firestore db is empty
   const submitAction = async (event, walletID, username) => {
     try {
       event.preventDefault();
       const docRef = await db.collection("users").doc(walletID);
       const user = await docRef.get();
-      if (user.exists) {
-        setUser({ id: user.id });
+      if (user.exists && user.data().name === username) {
+        setUser(user.data());
+        localStorage.setItem("user", JSON.stringify(user.data()));
+        console.log(user.data());
         history.push("/home");
       } else {
         alert("No user");

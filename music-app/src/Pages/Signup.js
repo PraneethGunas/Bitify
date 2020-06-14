@@ -97,6 +97,12 @@ export default function SignUp() {
           onSubmit={async (event) => {
             try {
               event.preventDefault();
+              const check = await db.collection("users").doc(walletID).get();
+              if (check.data().name) {
+                alert("Wallet in use by " + check.data().name);
+                return;
+              }
+              alert("100 Ethers will be deducted");
               const key = prompt(
                 "Enter the private key to make the transaction"
               );
