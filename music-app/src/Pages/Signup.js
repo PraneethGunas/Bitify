@@ -17,9 +17,8 @@ import Container from "@material-ui/core/Container";
 import { newContextComponents } from "@drizzle/react-components";
 import { firestore } from "../firebase";
 import { AppContext } from "./AppContext";
-import Web3 from "web3";
 import Collector from "../artifacts/Collector.json";
-import TruffleContract from "@truffle/contract";
+var contract = require("@truffle/contract");
 const db = firestore;
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -50,9 +49,9 @@ export default function SignUp() {
 
   const { drizzle, drizzleState } = React.useContext(AppContext);
   const { AccountData, ContractData, ContractForm } = newContextComponents;
-  const web3 = new Web3.providers.HttpProvider("http://localhost:7545");
-  const collector = TruffleContract(Collector);
-  collector.setProvider(web3);
+  const collector = contract(Collector);
+  collector.setProvider(drizzle.web3.currentProvider.url);
+  collector.setNetwork(5777);
   const changeUser = (event) => {
     setUser(event.target.value);
   };
@@ -69,33 +68,19 @@ export default function SignUp() {
     }
   };
 
-  const register = () => {
-    if (walletID) {
-      console.log(walletID);
-      const transaction = {};
-      web3.eth.sendTransaction(transaction, console.log);
-      // collector.deployed().then((instance) => {
-      //   instance.methods
-      //     .register()
-      //     .call({ from: walletID })
-      //     .on("transactionHash", function (hash) {
-      //       console.log(hash);
-      //     })
-      //     .on("receipt", function (receipt) {
-      //       console.log(receipt);
-      //     })
-      //     .on("confirmation", function (confirmationNumber, receipt) {
-      //       console.log(confirmationNumber, receipt);
-      //     })
-      //     .on("error", console.error);
-      // });
+  const collect100 = async (key) => {
+    try {
+      if (walletID) {
+        collector.deployed().then((instance) => {
+          instance.methods["register()"]
+            .sendTransaction({ from: walletID, value: 100000000000000000000 })
+            .then(console.log);
+        });
+      }
+    } catch (error) {
+      console.error(error);
     }
   };
-  useEffect(() => {
-    collector.deployed().then((instance) => {
-      console.log(instance);
-    });
-  });
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -109,9 +94,35 @@ export default function SignUp() {
         <form
           className={classes.form}
           noValidate
-          onSubmit={(event) => {
-            event.preventDefault();
-            register();
+          onSubmit={async (event) => {
+            try {
+              event.preventDefault();
+              const key = prompt(
+                "Enter the private key to make the transaction"
+              );
+              collect100(key);
+              const docRef = await db.collection("users").doc(walletID);
+              const user = await docRef.get();
+              if (user) {
+                docRef
+                  .set({
+                    name: fname + " " + lname,
+                    walletid: walletID,
+                    type: userType,
+                  })
+                  .then(() => {
+                    alert("Signed up successfully!");
+                  })
+                  .catch((error) => {
+                    console.log(error);
+                    alert("Error signing up!");
+                  });
+              } else {
+                alert("Enter a valid Wallet addredd");
+              }
+            } catch (e) {
+              console.log(e);
+            }
           }}
         >
           <Grid container spacing={2}>
