@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -46,7 +46,7 @@ export default function SignUp() {
   const [fname, setFname] = React.useState("");
   const [lname, setLname] = React.useState("");
   const [walletID, setWallet] = React.useState("");
-
+  const history = useHistory();
   const { drizzle, drizzleState } = React.useContext(AppContext);
   const { AccountData, ContractData, ContractForm } = newContextComponents;
   const collector = contract(Collector);
@@ -110,14 +110,18 @@ export default function SignUp() {
               const docRef = await db.collection("users").doc(walletID);
               const user = await docRef.get();
               if (user) {
+                const obj = {
+                  name: fname + " " + lname,
+                  walletid: walletID,
+                  type: userType,
+                };
                 docRef
-                  .set({
-                    name: fname + " " + lname,
-                    walletid: walletID,
-                    type: userType,
-                  })
+                  .set(obj)
                   .then(() => {
-                    alert("Signed up successfully!");
+                    localStorage.setItem("user", JSON.stringify(obj));
+                    setUser(obj);
+                    history.push("/home");
+                    // alert("Signed up successfully!");
                   })
                   .catch((error) => {
                     console.log(error);

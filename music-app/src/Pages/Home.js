@@ -5,7 +5,7 @@ import MusicPlayer from "react-responsive-music-player";
 import Song from "../components/Song";
 import { playlist } from "../data";
 import Balance from "../components/Balance";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 
 const Home = () => {
   // const { AccountData, ContractData, ContractForm } = newContextComponents;
@@ -14,6 +14,11 @@ const Home = () => {
   const [playing, setPlaying] = React.useState([playlist[0]]);
   const account = freshUser.walletid;
   const balance = drizzleState.accountBalances[account];
+  const history = useHistory();
+  const logout = () => {
+    localStorage.clear();
+    history.replace("/login");
+  };
   return (
     <div className="songlist">
       <div className="head">
@@ -29,6 +34,9 @@ const Home = () => {
 
           <div className="navli">Calculator</div>
           <div className="navli">Profile</div>
+          <div className="navli" onClick={logout}>
+            Logout
+          </div>
         </div>
         <div className="list">
           {playlist.map((song, index) => (
