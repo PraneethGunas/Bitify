@@ -22,17 +22,10 @@ const Home = () => {
   };
   const distribute = async () => {
     const activeUsers = await getActiveUsers();
-    calculateDistributions(activeUsers);
-    // const artistIDs = await getArtistsID();
-  };
-  const getArtistsID = async () => {
-    const artistsID = [];
-    const artists = await db.collection("artists").get();
-    artists.forEach((doc) => {
-      artistsID.push(doc.id);
-    });
-    console.log(artistsID);
-    return artistsID;
+    const distributionMap = calculateDistributions(activeUsers);
+    const artistIDs = await getArtistsID();
+    const distributedArray = await getParams(artistIDs, distributionMap);
+    collectorTransact(distributedArray);
   };
   const getActiveUsers = async () => {
     const activeUsers = [];
@@ -43,7 +36,6 @@ const Home = () => {
     users.forEach((doc) => {
       activeUsers.push(doc.data());
     });
-    console.log(activeUsers);
     return activeUsers;
   };
   const calculateDistributions = (AUs) => {
@@ -61,7 +53,28 @@ const Home = () => {
           : (item.artist[name] / totalCount) * USER_POOL;
       });
     });
-    console.log(distubutionMap);
+    return distubutionMap;
+  };
+  const getArtistsID = async () => {
+    const artistsID = {};
+    const artists = await db.collection("artists").get();
+    artists.forEach((doc) => {
+      artistsID[[doc.data().name]] = doc.id;
+    });
+    return artistsID;
+  };
+  const getParams = (AIDs, DM) => {
+    if (!DM) {
+      return;
+    }
+    const map = {};
+    Object.keys(AIDs).map((key) => {
+      map[AIDs[key]] = DM[key];
+    });
+    return map;
+  };
+  const collectorTransact = async (ArtistDistribution) => {
+    // call Contract here
   };
   return (
     <div className="songlist">
