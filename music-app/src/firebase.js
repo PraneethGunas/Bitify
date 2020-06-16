@@ -14,20 +14,16 @@ const firebaseConfig = {
 };
 
 firebase.initializeApp(firebaseConfig);
-export const auth = firebase.auth();
+// export const auth = firebase.auth();
 export const firestore = firebase.firestore();
 
 export const initialiseDB = async (drizzleState) => {
   const db = firestore;
   console.log(drizzleState);
   Object.values(drizzleState.accounts).map(async (item, index) => {
-    await db
-      .collection("users")
-      .doc(item)
-      .set({
-        walletid: item,
-        type: index > 10 ? "Listener" : "Artist",
-      });
+    await db.collection("users").doc(item).set({
+      walletid: item,
+    });
   });
   await db.collection("users").doc(drizzleState.accounts["0"]).set({
     walletid: drizzleState.accounts["0"],

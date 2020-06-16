@@ -15,7 +15,9 @@ const Transactions = () => {
     console.log(balance);
     return balance;
   };
-  getBalance(collector).then((bal) => setBalance(bal));
+  React.useEffect(() => {
+    getBalance(collector).then((bal) => setBalance(bal));
+  }, []);
   const [balance, setBalance] = useState("");
   return (
     <div>

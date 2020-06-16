@@ -5,10 +5,11 @@ import { firestore } from "../firebase";
 const db = firestore;
 const Song = ({ title, artist, tile, setPlaying, index, playing, user }) => {
   const increment = firebase.firestore.FieldValue.increment(1);
-  const updateCount = async (artistName) => {
+  const updateCount = async (id, artistName) => {
     try {
       const usersRef = await db.collection("users").doc(user.walletid);
-      await db.collection("artists").doc(artistName).update({
+      await usersRef.update({ totalCount: increment });
+      await db.collection("artists").doc(id).update({
         count: increment,
       });
       const listened = await usersRef.get();
@@ -29,7 +30,7 @@ const Song = ({ title, artist, tile, setPlaying, index, playing, user }) => {
     const temp = [];
     temp.push(playlist[index]);
     setPlaying(temp);
-    updateCount(temp[0].artist[0]);
+    updateCount(temp[0].walletid, temp[0].artist[0]);
   };
 
   return (
