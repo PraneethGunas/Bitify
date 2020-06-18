@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -42,11 +42,11 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SignUp() {
   const classes = useStyles();
-  const [userType, setUser] = React.useState("Listner");
+  const [userType, setUser] = React.useState("Listener");
   const [fname, setFname] = React.useState("");
   const [lname, setLname] = React.useState("");
   const [walletID, setWallet] = React.useState("");
-
+  const history = useHistory();
   const { drizzle, drizzleState } = React.useContext(AppContext);
   const { AccountData, ContractData, ContractForm } = newContextComponents;
   const collector = contract(Collector);
@@ -71,15 +71,28 @@ export default function SignUp() {
   const collect100 = async (key) => {
     try {
       if (walletID) {
-        collector.deployed().then((instance) => {
-          instance.methods["register()"]
-            .sendTransaction({ from: walletID, value: 100000000000000000000 })
-            .then(console.log);
-        });
+        const instance = await collector.deployed();
+        const transaction = await instance.methods[
+          "register()"
+        ].sendTransaction({ from: walletID, value: 100000000000000000000 });
+        console.log(transaction);
+        if (transaction.tx) {
+          return true;
+        } else return false;
       }
     } catch (error) {
       console.error(error);
+      return false;
     }
+  };
+  const updateArtist = async () => {
+    await db
+      .collection("artists")
+      .doc(walletID)
+      .set({
+        count: 0,
+        name: fname + " " + lname,
+      });
   };
   return (
     <Container component="main" maxWidth="xs">
@@ -96,35 +109,45 @@ export default function SignUp() {
           noValidate
           onSubmit={async (event) => {
             try {
+              let success = false;
               event.preventDefault();
-              const check = await db.collection("users").doc(walletID).get();
-              if (check.data().name) {
-                alert("Wallet in use by " + check.data().name);
-                return;
-              }
-              alert("100 Ethers will be deducted");
-              const key = prompt(
-                "Enter the private key to make the transaction"
-              );
-              collect100(key);
               const docRef = await db.collection("users").doc(walletID);
               const user = await docRef.get();
-              if (user) {
+              if (user.data().type) {
+                alert("Wallet in use by " + user.data().name);
+                return;
+              }
+              if (userType === "Listener") {
+                alert("100 Ethers will be deducted");
+                const key = prompt(
+                  "Enter the private key to make the transaction"
+                );
+                success = await collect100(key);
+              }
+              if (userType === "Artist") {
+                await updateArtist();
+              }
+              if (user && success) {
+                const obj = {
+                  name: fname + " " + lname,
+                  type: userType,
+                };
                 docRef
-                  .set({
-                    name: fname + " " + lname,
-                    walletid: walletID,
-                    type: userType,
-                  })
+                  .update(obj)
                   .then(() => {
-                    alert("Signed up successfully!");
+                    localStorage.setItem(
+                      "user",
+                      JSON.stringify({ ...obj, walletid: walletID })
+                    );
+                    setUser({ ...obj, walletid: walletID });
+                    history.push("/home");
                   })
                   .catch((error) => {
                     console.log(error);
                     alert("Error signing up!");
                   });
               } else {
-                alert("Enter a valid Wallet addredd");
+                alert("Enter a valid Wallet address");
               }
             } catch (e) {
               console.log(e);
@@ -174,9 +197,9 @@ export default function SignUp() {
                   onChange={(event) => changeUser(event)}
                 >
                   <FormControlLabel
-                    value="Listner"
+                    value="Listener"
                     control={<Radio />}
-                    label="Listner"
+                    label="Listener"
                   />
                   <FormControlLabel
                     value="Artist"

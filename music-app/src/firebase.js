@@ -3,7 +3,7 @@ import "firebase/auth";
 import "firebase/firestore";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAYgX1XgVnnbZU2SXDWOZJ1NiwHPFZMpVM",
+  apiKey: process.env.REACT_APP_API_KEY,
   authDomain: "bitify-7d21a.firebaseapp.com",
   databaseURL: "https://bitify-7d21a.firebaseio.com",
   projectId: "bitify-7d21a",
@@ -14,20 +14,16 @@ const firebaseConfig = {
 };
 
 firebase.initializeApp(firebaseConfig);
-export const auth = firebase.auth();
+// export const auth = firebase.auth();
 export const firestore = firebase.firestore();
 
 export const initialiseDB = async (drizzleState) => {
   const db = firestore;
   console.log(drizzleState);
   Object.values(drizzleState.accounts).map(async (item, index) => {
-    await db
-      .collection("users")
-      .doc(item)
-      .set({
-        walletid: item,
-        type: index > 10 ? "Listener" : "Artist",
-      });
+    await db.collection("users").doc(item).set({
+      walletid: item,
+    });
   });
   await db.collection("users").doc(drizzleState.accounts["0"]).set({
     walletid: drizzleState.accounts["0"],
