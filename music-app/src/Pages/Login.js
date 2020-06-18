@@ -57,11 +57,16 @@ export default function Login() {
       event.preventDefault();
       const docRef = await db.collection("users").doc(walletID);
       const user = await docRef.get();
-      if (user.exists && user.data().name === username) {
+      if (
+        user.exists &&
+        (user.data().name === username || user.data().type === "Admin")
+      ) {
         setUser(user.data());
         localStorage.setItem("user", JSON.stringify(user.data()));
         console.log(user.data());
-        history.push("/home");
+        if (user.data().type === "Admin") {
+          history.push("/dashBoard");
+        } else history.push("/home");
       } else {
         alert("No user");
       }

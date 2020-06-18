@@ -63,29 +63,28 @@ export const playlist = [
 
 export const artist = [
   {
-    name : "Ritviz",
-    views : 34,
-    cover : "https://i.scdn.co/image/5d38518f8c6e613558850eeddcdb97221ce4f3b2"
+    name: "Ritviz",
+    views: 34,
+    cover: "https://i.scdn.co/image/5d38518f8c6e613558850eeddcdb97221ce4f3b2",
   },
   {
-    name : "Alan Walker",
-    views : 44,
-    cover : "https://i.scdn.co/image/bdb5d22cabf7f20b271b8074c49edc7995fa5080"
+    name: "Alan Walker",
+    views: 44,
+    cover: "https://i.scdn.co/image/bdb5d22cabf7f20b271b8074c49edc7995fa5080",
   },
   {
-    name : "Louis Fonsi",
-    views : 45,
-    cover : "https://static.tvtropes.org/pmwiki/pub/images/luisfonsihd.jpg"
+    name: "Louis Fonsi",
+    views: 45,
+    cover: "https://static.tvtropes.org/pmwiki/pub/images/luisfonsihd.jpg",
   },
   {
-    name : "Eminem",
-    views : 45,
-    cover : "https://i.scdn.co/image/ad64a7fbc24b31cd84455a1aef34758b94246352"
+    name: "Eminem",
+    views: 45,
+    cover: "https://i.scdn.co/image/ad64a7fbc24b31cd84455a1aef34758b94246352",
   },
   {
-    name : "Lauv",
-    views : 45,
-    cover : "https://i.scdn.co/image/0bc167ec9a5f07b22a30e61a156d35397923a3ff"
-  }
-
-]
+    name: "Jay Chou",
+    views: 45,
+    cover: "https://i.scdn.co/image/0bc167ec9a5f07b22a30e61a156d35397923a3ff",
+  },
+];
