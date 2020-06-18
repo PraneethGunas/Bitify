@@ -7,6 +7,9 @@ import { playlist } from "../data";
 import Balance from "../components/Balance";
 import { Link, useHistory } from "react-router-dom";
 import { firestore } from "../firebase";
+import Collector from "../artifacts/Collector.json";
+import Web3 from "web3";
+var contract = require("@truffle/contract");
 const db = firestore;
 const Home = () => {
   // const { AccountData, ContractData, ContractForm } = newContextComponents;
@@ -40,7 +43,6 @@ const Home = () => {
   };
   const calculateDistributions = (AUs) => {
     if (!AUs.length) {
-      alert("No activity yet!");
       return;
     }
     const distubutionMap = {};
@@ -73,8 +75,48 @@ const Home = () => {
     });
     return map;
   };
+  const web3 = new Web3("ws://127.0.0.1:7545");
   const collectorTransact = async (ArtistDistribution) => {
-    // call Contract here
+    if (!ArtistDistribution) {
+      alert("No activity yet!");
+      return null;
+    }
+    const artists = Object.keys(ArtistDistribution);
+    const amountToTransfer = Object.values(ArtistDistribution).map((item) =>
+      Web3.utils.toWei("" + parseInt(item))
+    );
+    const collector = contract(Collector);
+    collector.setProvider(drizzle.web3.currentProvider.url);
+    collector.setNetwork(5777);
+    artists.map((item, index) => {
+      console.log(web3.eth);
+      const sender = drizzleState.accounts["49"];
+      const receiver = item;
+      const valueToSend = amountToTransfer[index];
+      const transactionObject = {
+        from: sender,
+        to: receiver,
+        value: valueToSend,
+      };
+      web3.eth.sendTransaction(transactionObject);
+    });
+    // try {
+    //   const instance = await collector.deployed();
+    //   console.log(instance);
+    //   console.log(artists, amountToTransfer);
+    //   // artists.map(async (item, index) => {
+    //   const transaction = await instance.methods[
+    //     "payArtist(uint256)"
+    //   ].sendTransaction(100, {
+    //     from: artists[0],
+    //     value: 100,
+    //     gas: "800000",
+    //   });
+    //   console.log(transaction);
+    //   // });
+    // } catch (error) {
+    //   console.error(error);
+    // }
   };
   return (
     <div className="songlist">
@@ -117,7 +159,7 @@ const Home = () => {
         <MusicPlayer
           playlist={playing}
           width={"100%"}
-          autoplay={true}
+          autoplay={false}
           progressColor={"#f98e1d"}
         />
       </div>
