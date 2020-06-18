@@ -17,7 +17,7 @@ const Home = () => {
   return (
     <div className="songlist">
       <div className="head">
-        <div className="logo">BITTIFY</div>
+        <div className="logo">BITIFY</div>
         <div className="topBar">Hello {freshUser.name}</div>
         <Balance balance={balance} />
       </div>

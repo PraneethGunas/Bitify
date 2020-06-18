@@ -4,6 +4,7 @@ import Home from "../Pages/Home";
 import Login from "../Pages/Login";
 import Signup from "../Pages/Signup";
 import Transactions from "./Transactions";
+import DashBoard from "./DashBoard";
 export default function Routes() {
   return (
     <Router>
@@ -22,6 +23,9 @@ export default function Routes() {
         </Route>
         <Route path="/transactions">
           <Transactions />
+        </Route>
+        <Route path="/dashBoard">
+          <DashBoard />
         </Route>
       </Switch>
     </Router>
