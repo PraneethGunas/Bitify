@@ -79,8 +79,9 @@ const Home = () => {
   const collectorTransact = async (ArtistDistribution) => {
     if (!ArtistDistribution) {
       alert("No activity yet!");
-      return null;
+      return;
     }
+    console.log(ArtistDistribution);
     const artists = Object.keys(ArtistDistribution);
     const amountToTransfer = Object.values(ArtistDistribution).map((item) =>
       Web3.utils.toWei("" + parseInt(item))
@@ -89,10 +90,9 @@ const Home = () => {
     collector.setProvider(drizzle.web3.currentProvider.url);
     collector.setNetwork(5777);
     artists.map((item, index) => {
-      console.log(web3.eth);
-      const sender = drizzleState.accounts["49"];
+      const sender = drizzleState.accounts["0"];
       const receiver = item;
-      const valueToSend = amountToTransfer[index];
+      const valueToSend = Number(amountToTransfer[index]);
       const transactionObject = {
         from: sender,
         to: receiver,

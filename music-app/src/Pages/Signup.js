@@ -18,6 +18,8 @@ import { newContextComponents } from "@drizzle/react-components";
 import { firestore } from "../firebase";
 import { AppContext } from "./AppContext";
 import Collector from "../artifacts/Collector.json";
+import Web3 from "web3";
+
 var contract = require("@truffle/contract");
 const db = firestore;
 const useStyles = makeStyles((theme) => ({
@@ -55,6 +57,7 @@ export default function SignUp() {
   const changeUser = (event) => {
     setUser(event.target.value);
   };
+  const web3 = new Web3("ws://127.0.0.1:7545");
 
   const onChangeHandler = (event) => {
     const { name, value } = event.currentTarget;
@@ -71,14 +74,21 @@ export default function SignUp() {
   const collect100 = async (key) => {
     try {
       if (walletID) {
-        const instance = await collector.deployed();
-        const transaction = await instance.methods[
-          "register()"
-        ].sendTransaction({ from: walletID, value: 100000000000000000000 });
-        console.log(transaction);
-        if (transaction.tx) {
-          return true;
-        } else return false;
+        // const instance = await collector.deployed();
+        // const transaction = await instance.methods[
+        //   "register()"
+        // ].sendTransaction({ from: walletID, value: 100000000000000000000 });
+        // console.log(transaction);
+        const sender = walletID;
+        const receiver = drizzleState.accounts["0"];
+        const valueToSend = 100000000000000000000;
+        const transactionObject = {
+          from: sender,
+          to: receiver,
+          value: valueToSend,
+        };
+        await web3.eth.sendTransaction(transactionObject);
+        return true;
       }
     } catch (error) {
       console.error(error);
@@ -109,7 +119,6 @@ export default function SignUp() {
           noValidate
           onSubmit={async (event) => {
             try {
-              let success = false;
               event.preventDefault();
               const docRef = await db.collection("users").doc(walletID);
               const user = await docRef.get();
@@ -122,12 +131,12 @@ export default function SignUp() {
                 const key = prompt(
                   "Enter the private key to make the transaction"
                 );
-                success = await collect100(key);
+                await collect100(key);
               }
               if (userType === "Artist") {
                 await updateArtist();
               }
-              if (user && success) {
+              if (user) {
                 const obj = {
                   name: fname + " " + lname,
                   type: userType,

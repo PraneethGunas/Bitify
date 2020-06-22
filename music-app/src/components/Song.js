@@ -7,6 +7,7 @@ const Song = ({ title, artist, tile, setPlaying, index, playing, user }) => {
   const increment = firebase.firestore.FieldValue.increment(1);
   const updateCount = async (id, artistName) => {
     try {
+      console.log(artistName);
       const usersRef = await db.collection("users").doc(user.walletid);
       await usersRef.update({ totalCount: increment });
       await db.collection("artists").doc(id).update({

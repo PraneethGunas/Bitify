@@ -8,13 +8,15 @@ const Transactions = () => {
   const { drizzle, drizzleState, user } = React.useContext(AppContext);
   const collector = contract(Collector);
   const getBalance = async (collector) => {
-    console.log(drizzle, drizzleState);
+    // console.log(drizzle, drizzleState);
     collector.setProvider(drizzle.web3.currentProvider.url);
     collector.setNetwork(5777);
     const instance = await collector.deployed();
-    web3.eth.getBalance(instance.address).then((bal) => {
-      setBalance(web3.utils.fromWei(bal));
-    });
+    web3.eth
+      .getBalance("0x0a077Ba13529B6b06Da2B6D0154d2b6A7592530c")
+      .then((bal) => {
+        setBalance(web3.utils.fromWei(bal));
+      });
   };
   const web3 = new Web3("ws://127.0.0.1:7545");
   React.useEffect(() => {
@@ -36,7 +38,7 @@ const Transactions = () => {
     <div>
       <h2>Transactions</h2>
       <h4>Reward Pool:{balance}</h4>
-      <h2>BlockNumbe: {blockNumber}</h2>
+      <h2>BlockNumber: {blockNumber}</h2>
       <JSONTree
         data={blockData}
         theme={{
